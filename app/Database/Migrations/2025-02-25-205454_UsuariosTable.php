@@ -4,7 +4,7 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class CreateUsuariosTable extends Migration
+class UsuariosTable extends Migration
 {
     public function up()
     {

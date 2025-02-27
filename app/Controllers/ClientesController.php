@@ -13,16 +13,26 @@ class ClientesController extends ResourceController
     // GET /clientes
     public function index()
     {
-        $clientes = $this->model->findAll();
+        $limite = $this->request->getGet('limite') ?? 10; // Valor padrão de 10 registros por página
+        $pagina = $this->request->getGet('pagina') ?? 1; // Página padrão é 1
+
+        $clientes = $this->model->paginate($limite, 'default', $pagina);
+        $pager = $this->model->pager; // Pegando a paginação automática do CodeIgniter
 
         return $this->respond([
             "cabecalho" => [
                 "status" => 200,
                 "mensagem" => "Lista de clientes retornada com sucesso"
             ],
-            "retorno" => $clientes
+            "retorno" => [
+                "pagina_atual" => $pager->getCurrentPage(),
+                "total_paginas" => $pager->getPageCount(),
+                "total_registros" => $pager->getTotal(),
+                "clientes" => $clientes
+            ]
         ], 200);
     }
+
 
     public function show($id = null)
     {
